@@ -122,8 +122,8 @@ class SIR_fit():
                 x = x+alpha*d
                 eta_prev = eta
                 j+=1
-                residue.append(f(*x))
-                print('j=',j)
+                # residue.append(f(*x))
+                # print('j=',j)
             r = -self.gradient(f, x, eps)
             delta_old = delta_new
             delta_mid = r@s
@@ -162,7 +162,7 @@ class SIR_fit():
         # More gradient descent until delta_new is positive:
         delta_new = -1
         # M=self.hessian(cost_function, [beta, gamma], 0.01)
-        while delta_new <= 0: # or residue[-1]>1:
+        while delta_new <= 0 or residue[-1]>5*150/self.N_times:
             adjusted_stepsize = max([0.001,stepsize/ctr])
             beta, gamma = self.gradient_step(data, adjusted_stepsize, beta, gamma)
             r = -self.gradient(cost_function, [beta, gamma], 0.01)
@@ -205,7 +205,7 @@ class SIR_fit():
         change_in_error = 1
         ctr = 1
 
-        while (change_in_error / chi > 0.1*np.max(np.abs(data)) or chi > 0.1) and ctr < 1000:
+        while (change_in_error / chi > 0.1*np.max(np.abs(data)) or chi/self.N_times > 1e-3) and ctr < 1000:
             adjusted_stepsize = stepsize/(np.max([ctr-5,1])+np.exp(ctr/60)-1)
             minimal_stepsize = 0.00005
             if adjusted_stepsize > minimal_stepsize:

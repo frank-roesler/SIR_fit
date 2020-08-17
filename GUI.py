@@ -157,7 +157,7 @@ class SIR_GUI(wx.Frame):
                 field.Clear()
                 text.SetLabel(label + str(entered))
                 self.data_generated = False
-                self.dialog=None
+                self.dialog = None
                 return entered
             except:
                 self.dialog = wx.MessageDialog(None, message="All fields must have numerical values entered.",
@@ -178,7 +178,11 @@ class SIR_GUI(wx.Frame):
 
         if self.dialog is not None:
             self.dialog.ShowModal()
-        self.SIR = SIR_fit.SIR_fit(self.dt, self.T, self.S0, self.I0, self.R0, self.N_times)
+
+        self.SIR.S0 = self.S0
+        self.SIR.I0 = self.I0
+        self.SIR.R0 = self.R0
+        self.SIR.N_times = self.N_times
 
     def plot_simulated_data(self,evt):
         if not self.data_generated:
@@ -297,14 +301,17 @@ class SIR_GUI(wx.Frame):
         self.T = 100
         self.dt = 0.01
         self.data_generated = False
+        self.dialog = None
         self.S_text.SetLabel('S0 = ' + str(self.S0))
         self.I_text.SetLabel('I0 = ' + str(self.I0))
         self.R_text.SetLabel('R0 = ' + str(self.R0))
         self.b_text.SetLabel('beta0 = ' + str(self.beta0))
         self.g_text.SetLabel('gamma0 = ' + str(self.gamma0))
         self.N_text.SetLabel('N = ' + str(self.N_times))
-        self.SIR = SIR_fit.SIR_fit(self.dt, self.T, self.S0, self.I0, self.R0, self.N_times)
-
+        self.SIR.S0 = self.S0
+        self.SIR.I0 = self.I0
+        self.SIR.R0 = self.R0
+        self.SIR.N_times = self.N_times
 
 #=======================================================================================================
 
